@@ -12,13 +12,15 @@
 
 ## ⚙️ Features
 
-- 🔎 **Class Search** — Find loaded classes by keyword
-- 🔧 **Auto Method Hooking** — Hook all overloads automatically
-- 🔨 **Return Value Replacement** — Change method return values easily
-- 🧵 **Stack Trace Printing** — Dump full Java stack traces
-- 📦 **Object Dumping** — Print fields of any Java object
-- 📜 **Method Listing** — List all declared methods of any class
-- 🧙‍♂️ **Zero Frida Knowledge Required**
+- 🔎 **Class Search** — Search loaded classes by keyword (`listClasses()`)
+- 📜 **Method Listing** — List all declared methods (`listMethods()`)
+- 🔑 **Field Listing** — View all fields of any class (`listFields()`)
+- 🎯 **Auto Method Hooking** — Hook all overloads automatically (`hookMethod()`)
+- 🎭 **Constructor Hooking** — Hook object constructors (`hookConstructor()`)
+- 🔨 **Return Value Hooking** — Override any method return (`hookReturnValue()`)
+- 🧵 **Stack Trace Printing** — Dump full Java stack trace (`printStackTrace()`)
+- 📦 **Object Dumping** — Dump fields of any object instance (`dumpObject()`)
+- 🧙‍♂️ **Zero Frida Knowledge Required** — Full abstraction
 
 ---
 
@@ -34,23 +36,27 @@ git clone https://github.com/vishal2376-dr/frida-helper.git
 Step 1 : Write Custom hook function and save as `demo.js`
   ```javascript
   // demo.js
-  Java.perform(function() {
 
-    // Search for classes containing a keyword
-    FridaHelper.searchClasses("Activity");
+// Search loaded classes containing keyword
+FridaHelper.listClasses("Activity");
 
-    // Print all methods of a class
-    FridaHelper.showMethods("com.example.app.MainActivity");
+// Show all methods of a class
+FridaHelper.listMethods("com.example.app.MainActivity");
 
-    // Hook all overloads of a method
-    FridaHelper.hookMethod("com.example.app.MainActivity", "isUserLoggedIn", function(args, overload, that) {
-        FridaHelper.log("isUserLoggedIn() called");
-        FridaHelper.printStackTrace();
-    });
+// Hook a method (automatically hooks all overloads)
+FridaHelper.hookMethod("com.example.app.MainActivity", "isUserLoggedIn", function(args, overload, that) {
+    FridaHelper.log("isUserLoggedIn() called");
+    FridaHelper.printStackTrace();
+});
 
-    // Replace return value of a method
-    FridaHelper.replaceReturnValue("com.example.app.MainActivity", "isUserLoggedIn", true);
-  });
+// Replace return value of a method
+FridaHelper.hookReturnValue("com.example.app.MainActivity", "isUserLoggedIn", true);
+
+// Hook constructor
+FridaHelper.hookConstructor("com.example.app.MainActivity", function(args, ctor, that) {
+    FridaHelper.log("Constructor called");
+});
+
   ```
 
 Step 2 : Run script with your target app (in this case target app is `com.example.app`)
@@ -60,14 +66,17 @@ frida -U -f com.example.app -l FridaHelper.js -l demo.js
 
 ## 🎯 Use Case Examples
 
-| Task                     | One-Liner Call                                                               |
-| ------------------------ | ---------------------------------------------------------------------------- |
-| Search classes           | `FridaHelper.searchClasses("Activity")`                                      |
-| Show class methods       | `FridaHelper.showMethods("com.example.MyClass")`                             |
-| Hook any method          | `FridaHelper.hookMethod("com.example.MyClass", "methodName", callback)`      |
-| Replace method return    | `FridaHelper.replaceReturnValue("com.example.MyClass", "methodName", value)` |
-| Print stacktrace anytime | `FridaHelper.printStackTrace()`                                              |
-| Dump object fields       | `FridaHelper.dumpObject(objectInstance)`                                     |
+| Task                     | Call Example                                                              |
+| ------------------------ | ------------------------------------------------------------------------- |
+| Search classes           | `FridaHelper.listClasses("Activity")`                                     |
+| Show class methods       | `FridaHelper.listMethods("com.example.MyClass")`                          |
+| Show class fields        | `FridaHelper.listFields("com.example.MyClass")`                           |
+| Hook any method          | `FridaHelper.hookMethod("com.example.MyClass", "methodName", callback)`   |
+| Replace method return    | `FridaHelper.hookReturnValue("com.example.MyClass", "methodName", value)` |
+| Hook constructor         | `FridaHelper.hookConstructor("com.example.MyClass", callback)`            |
+| Print stacktrace anytime | `FridaHelper.printStackTrace()`                                           |
+| Dump object fields       | `FridaHelper.dumpObject(objectInstance)`                                  |
+
 
 </br>
 <hr>
