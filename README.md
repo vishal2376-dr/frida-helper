@@ -14,12 +14,9 @@
 
 - 🔎 **Class Search** — Search loaded classes by keyword (`listClasses()`)
 - 📜 **Method Listing** — List all declared methods (`listMethods()`)
-- 🔑 **Field Listing** — View all fields of any class (`listFields()`)
 - 🎯 **Auto Method Hooking** — Hook all overloads automatically (`hookMethod()`)
-- 🎭 **Constructor Hooking** — Hook object constructors (`hookConstructor()`)
 - 🔨 **Return Value Hooking** — Override any method return (`hookReturnValue()`)
 - 🧵 **Stack Trace Printing** — Dump full Java stack trace (`printStackTrace()`)
-- 📦 **Object Dumping** — Dump fields of any object instance (`dumpObject()`)
 - 🧙‍♂️ **Zero Frida Knowledge Required** — Full abstraction
 
 ---
@@ -52,11 +49,6 @@ FridaHelper.hookMethod("com.example.app.MainActivity", "isUserLoggedIn", functio
 // Replace return value of a method
 FridaHelper.hookReturnValue("com.example.app.MainActivity", "isUserLoggedIn", true);
 
-// Hook constructor
-FridaHelper.hookConstructor("com.example.app.MainActivity", function(args, ctor, that) {
-    FridaHelper.log("Constructor called");
-});
-
   ```
 
 Step 2 : Run script with your target app (in this case target app is `com.example.app`)
@@ -70,13 +62,9 @@ frida -U -f com.example.app -l FridaHelper.js -l demo.js
 | ------------------------ | ------------------------------------------------------------------------- |
 | Search classes           | `FridaHelper.listClasses("Activity")`                                     |
 | Show class methods       | `FridaHelper.listMethods("com.example.MyClass")`                          |
-| Show class fields        | `FridaHelper.listFields("com.example.MyClass")`                           |
 | Hook any method          | `FridaHelper.hookMethod("com.example.MyClass", "methodName", callback)`   |
 | Replace method return    | `FridaHelper.hookReturnValue("com.example.MyClass", "methodName", value)` |
-| Hook constructor         | `FridaHelper.hookConstructor("com.example.MyClass", callback)`            |
 | Print stacktrace anytime | `FridaHelper.printStackTrace()`                                           |
-| Dump object fields       | `FridaHelper.dumpObject(objectInstance)`                                  |
-
 
 </br>
 <hr>
